@@ -14,7 +14,8 @@ public class HomePrintDanServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.getRequestDispatcher("/jsp/home/printDan.jsp").forward(request, response);
-		// 아래 src 폴더에 있는 /jsp/home/printDan.jsp에 일을 요청한다.
+		// sevlet이 아래 src 폴더에 있는 /jsp/home/printDan.jsp에 일을 요청한다.
+		// forward는 파라미터를 넘겨준다.
 	}
 
 }
