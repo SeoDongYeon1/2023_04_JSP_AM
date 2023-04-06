@@ -7,7 +7,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class SecSql {
+	HttpServletRequest req;
+	HttpServletResponse resp;
 	private StringBuilder sqlBuilder;
 	private List<Object> datas;
 

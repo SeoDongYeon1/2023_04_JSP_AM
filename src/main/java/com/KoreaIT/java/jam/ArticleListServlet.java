@@ -51,9 +51,14 @@ public class ArticleListServlet extends HttpServlet {
 			
 			sql.append("SELECT * FROM article;");
 			
-			List<Map<String, Object>> articlesListMap = DBUtil.selectRows(conn, sql);
+			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			
-			response.getWriter().append(articlesListMap.toString());
+			response.getWriter().append(articleRows.toString());
+			
+			request.setAttribute("articleRows", articleRows);
+			// 서블릿에서 jsp에 뭔가를 알려줘야할때
+			
+			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,5 +71,6 @@ public class ArticleListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 }
