@@ -1,4 +1,4 @@
-package com.KoreaIT.java.jam;
+package com.KoreaIT.java.jam.dto;
 
 public class Article {
 	int id;

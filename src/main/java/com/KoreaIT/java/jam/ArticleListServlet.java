@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,13 +42,10 @@ public class ArticleListServlet extends HttpServlet {
 
 			response.getWriter().append("Success!!");
 			
-			List<Article> articles = new ArrayList<>();
-			
-			DBUtil dbUtil = new DBUtil(request, response);
-			
 			SecSql sql = new SecSql();
 			
-			sql.append("SELECT * FROM article;");
+			sql.append("SELECT * FROM article");
+			sql.append("ORDER BY id DESC;");
 			
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			

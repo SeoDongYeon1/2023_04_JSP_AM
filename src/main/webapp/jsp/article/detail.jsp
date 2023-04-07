@@ -7,7 +7,13 @@
 
 <%
 Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
-int id = Integer.parseInt(request.getParameter("id"));
+String inputedid = request.getParameter("id");
+
+if(inputedid==null) {
+	inputedid = "1";
+}
+
+int id = Integer.parseInt(inputedid);
 %>
 <!DOCTYPE html>
 <html>

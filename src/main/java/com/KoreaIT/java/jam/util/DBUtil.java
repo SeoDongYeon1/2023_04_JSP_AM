@@ -11,19 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.KoreaIT.java.jam.exception.SQLErrorException;
 
 public class DBUtil {
-	HttpServletRequest req;
-	HttpServletResponse resp;
-	public DBUtil(HttpServletRequest request, HttpServletResponse response) {
-		this.req = request;
-		this.resp = response;
-	}
-
 	public static Map<String, Object> selectRow(Connection dbConn, SecSql sql) {
 		List<Map<String, Object>> rows = selectRows(dbConn, sql);
 

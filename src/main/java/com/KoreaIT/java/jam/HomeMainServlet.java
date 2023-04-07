@@ -11,6 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeMainServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Hello, World!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!").append(request.getContextPath());
+		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
 	}
 }
