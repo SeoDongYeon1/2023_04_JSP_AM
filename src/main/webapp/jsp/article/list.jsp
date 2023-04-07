@@ -7,6 +7,7 @@
 
 <%
 List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
+int searchpage = request.getAttribute("page");
 %>
 
 <!DOCTYPE html>
@@ -48,6 +49,8 @@ List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getA
 		<%}
 		%>
 	</table>
+	
+	<div><a href="list?page=<%= %>"></a></div>
 
 </body>
 
