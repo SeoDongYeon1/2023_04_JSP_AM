@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/article/detail")
-public class ArticleDetailServlet extends HttpServlet {
+@WebServlet("/article/delete")
+public class ArticleDeleteServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
@@ -47,18 +47,13 @@ public class ArticleDetailServlet extends HttpServlet {
 			
 			int id = Integer.parseInt(inputedid);
 			
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
-			sql.append("WHERE article.id = ?", id);
+			SecSql sql = new SecSql();
+			sql.append("DELETE FROM article");
+			sql.append("WHERE id = ?", id);
 			
-			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
-			
-			response.getWriter().append(articleRow.toString());
-			
-			request.setAttribute("articleRow", articleRow);
-			// 서블릿에서 jsp에 뭔가를 알려줘야할때
-			
-			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
+			DBUtil.delete(conn, sql);
+						
+			response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list')</script>", id));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

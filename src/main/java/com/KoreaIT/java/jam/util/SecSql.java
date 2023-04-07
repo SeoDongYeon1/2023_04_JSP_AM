@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+// 보안 issue 방지
 public class SecSql {
 	HttpServletRequest req;
 	HttpServletResponse resp;
