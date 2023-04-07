@@ -33,3 +33,5 @@ title = '제목4',
 
 SELECT * FROM article;
 
+UPDATE article SET title = '제목11' WHERE id = 1;
+
