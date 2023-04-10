@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/article/doWrite")
-public class ArticleDoWriteServlet extends HttpServlet {
+@WebServlet("/article/doModify")
+public class ArticleDoModifyServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,7 +42,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
-			request.setCharacterEncoding("UTF-8");
+			int id = Integer.parseInt(request.getParameter("id"));
 			
 			if(title==null) {
 				title = "제목";
@@ -52,16 +52,14 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			}
 
 			SecSql sql = new SecSql();
-			sql.append("INSERT INTO article");
-			sql.append("SET regDate = NOW(),");
-			sql.append("title = ?,", title);
-			sql.append("`body` = ?;", body);
+			sql.append("UPDATE article");
+			sql.append("SET title = ?", title);
+			sql.append(", `body` = ?", body);
+			sql.append("WHERE id = ?;", id);
+
+			DBUtil.update(conn, sql);
 			
-			int id = DBUtil.insert(conn, sql);
-			
-			response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('list')</script>", id));
-			
-			//request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
+			response.getWriter().append(String.format("<script>alert('%d번 글이 수정되었습니다.'); location.replace('detail?id=%d')</script>", id, id));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

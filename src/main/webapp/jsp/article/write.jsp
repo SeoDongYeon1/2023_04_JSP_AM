@@ -13,7 +13,7 @@
 	
 	<form method="post" action="doWrite">
 		<div>
-			제목 : <input autocomplete="on" type="text" placeholder="제목을 입력해주세요." name="title"/>
+			제목 : <input type="text" placeholder="제목을 입력해주세요." name="title" autocomplete="on"/>
 		</div>
 		<div>
 			내용 : <textarea type="text" placeholder="내용을 입력해주세요." name="body"></textarea>
