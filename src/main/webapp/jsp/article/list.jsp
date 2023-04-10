@@ -34,11 +34,11 @@ int endPage = startPage+displayPage-1;
 	<h1 style = "text-align:center;">게시물 리스트</h1>
 	<nav class="menu_option">
 		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
-			<a href="../home/main">메인 페이지로 이동</a>
+			<a style = "display: block" href="../home/main">메인 페이지로 이동</a>
 		</div>
 
 		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
-			<a href="write">글 작성하기</a>
+			<a style = "display: block" href="write">글 작성하기</a>
 		</div>
 	</nav>
 	<br />
