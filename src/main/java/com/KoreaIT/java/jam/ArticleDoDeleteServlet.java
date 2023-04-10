@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/article/delete")
-public class ArticleDeleteServlet extends HttpServlet {
+@WebServlet("/article/doDelete")
+public class ArticleDoDeleteServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");

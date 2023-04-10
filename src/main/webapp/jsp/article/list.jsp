@@ -29,7 +29,12 @@ else {
 <body>
 	<h1 style = "text-align:center;">게시물 리스트</h1>
 	
-	<div ><a href="../home/main">메인 페이지로 이동</a></div>
+	<div >
+		<a href="../home/main">메인 페이지로 이동</a></div>
+	<div>
+	
+	<div >
+		<a href="write">글 작성하기</a></div>
 	<div>
 		<table style="border-collapse: collapse; border-color: green; " border="2px">
 			<tr>
@@ -45,7 +50,7 @@ else {
 				<td><%=articleRow.get("id") %></td>
 				<td><%=articleRow.get("regDate") %></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title") %></a></td>
-				<td><a href="delete?id=<%=articleRow.get("id")%>">del</a></td>
+				<td><a href="doDelete?id=<%=articleRow.get("id")%>">del</a></td>
 			</tr>
 			<%} %>
 		</table>

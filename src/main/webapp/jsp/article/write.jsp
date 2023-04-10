@@ -1,13 +1,6 @@
-<%@ page import="java.util.List"%>
-<%@ page import="java.util.Map"%>
-<%@ page import="java.util.Scanner;"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%
-Scanner sc = new Scanner(System.in);
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,9 +8,17 @@ Scanner sc = new Scanner(System.in);
 <title>게시물 작성</title>
 </head>
 <body>
-	<h1>게시물 작성</h1>
-	<div>제목 : <%=sc.nextLine() %></div>
-	<div>내용 : <%=sc.nextLine() %></div>
 	<div><a style="color:green" href="list">리스트로 돌아가기</a></div>
+	<h1 style="text-align:center;">게시물 작성</h1>
+	
+	<form method="post" action="doWrite">
+		<div>
+			제목 : <input autocomplete="on" type="text" placeholder="제목을 입력해주세요." name="title"/>
+		</div>
+		<div>
+			내용 : <textarea type="text" placeholder="내용을 입력해주세요." name="body"></textarea>
+		</div>
+		<button type="submit">글쓰기</button>
+	</form>
 </body>
 </html>
