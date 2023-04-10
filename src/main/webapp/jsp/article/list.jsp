@@ -36,21 +36,19 @@ else {
 	<div >
 		<a href="write">글 작성하기</a></div>
 	<div>
-		<table style="border-collapse: collapse; border-color: green; " border="2px">
+		<table style="border-collapse: collapse; border-color: green; width: 600px;" border = 2px >
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
-				<th>내용</th>
-				<th>삭제</th>
+				<th>작성날짜</th>
 			</tr>
 		
 			<%for(Map<String, Object> articleRow : articleRows) {
 			%>		
 			<tr style = "text-align: center;">
 				<td><%=articleRow.get("id") %></td>
-				<td><%=articleRow.get("regDate") %></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title") %></a></td>
-				<td><a href="doDelete?id=<%=articleRow.get("id")%>">del</a></td>
+				<td><%=articleRow.get("regDate") %></td>
 			</tr>
 			<%} %>
 		</table>
