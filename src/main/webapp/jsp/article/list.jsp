@@ -19,6 +19,10 @@ else {
 	totalPage = totalCnt/10+1;
 }
 
+int displayPage = 10;
+int startPage = ((cur_Page-1)/displayPage)*displayPage+1;
+int endPage = startPage+displayPage-1;
+
 %>
 <!DOCTYPE html>
 <html>
@@ -55,26 +59,47 @@ else {
 	</div>
 	
 	<style type="text/css">
-		.page{
-			background-color: gold;
-		}
-		
 		.page > a {
 			color: black;
+			text-decoration: none;
 		}
 		
 		.page > a.red {
 			color: red;
 		}
+		.page > a.underline {
+			text-decoration: underline;
+		}
 	</style>
 
 	<div class="page">
-		<a class = "first_page" href="list?page=1">[처음 페이지]</a>
-		<%for(int i = 1; i <= totalPage; i++) {
+		<a class = "first_page" href="list?page=1">[<<]</a>
+		<%
+		if(endPage > totalPage)
+		{
+			endPage = totalPage;
+		}
+							
+	    if(startPage > displayPage)
+	    { 
 		%>
-		<a class= "<%=cur_Page == i ? "red" : ""%>" href="list?page=<%=i%>"><%=i %></a>
-		<%} %>
-		<a class = "first_page" href="list?page=<%=totalPage %>">[마지막 페이지]</a>
+			<a href="list?page=<%=startPage - 10%>">[이전]</a>	
+		<%}%>
+		<%
+		for(int i=startPage; i <= endPage; i++){
+			if(i == cur_Page){%>
+				<a class= "<%=cur_Page == i ? "red underline" : "" %>" href="list?page=<%=i%>">[<%=i %>]</a>
+			<%									
+			}else{
+			%>
+				<a class= "<%=cur_Page == i ? "red underline" : "" %>" href="list?page=<%=i%>">[<%=i %>]</a>
+		<%}
+		}%>
+		<%
+		if(endPage < totalPage){%>
+			<a href="list?page=<%=startPage + 10 %>">[다음]</a>
+		<%}%>
+		<a class = "last_page" href="list?page=<%=totalPage %>">[>>]</a>
 	</div>
 	
 </body>
