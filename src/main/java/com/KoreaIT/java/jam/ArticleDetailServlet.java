@@ -23,7 +23,7 @@ public class ArticleDetailServlet extends HttpServlet {
 		// DB 연결
 		String url = "jdbc:mysql://127.0.0.1:3306/JSPAM?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 		String user = "root";
-		String password = "";
+		String password = "1234";
 		Connection conn = null;
 		
 		try {

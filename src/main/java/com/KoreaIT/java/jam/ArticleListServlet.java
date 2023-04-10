@@ -26,7 +26,7 @@ public class ArticleListServlet extends HttpServlet {
 		// DB 연결
 		String url = "jdbc:mysql://127.0.0.1:3306/JSPAM?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 		String user = "root";
-		String password = "";
+		String password = "1234";
 		Connection conn = null;
 		
 		try {
@@ -52,21 +52,24 @@ public class ArticleListServlet extends HttpServlet {
 			
 			int itemsInAPage = 10;
 			int limitFrom = (page - 1) * itemsInAPage;
-			int limitTake = itemsInAPage;
 			
 			SecSql sql = new SecSql();
 			
 			sql.append("SELECT * FROM article");
-			sql.append("ORDER BY id DESC");
-			sql.append("LIMIT ?, ?;", limitFrom, limitTake);
+			sql.append("ORDER BY id DESC LIMIT ?, ?", limitFrom, itemsInAPage);
 			
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			
 			response.getWriter().append(articleRows.toString());
 			
+			SecSql sql1 = new SecSql();
+			sql1.append("SELECT COUNT(*) FROM article");
+			int pagenum = DBUtil.selectRowIntValue(conn, sql1);
+			
 			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("page", page);
-			// 서블릿에서 jsp에 뭔가를 알려줘야할때
+			request.setAttribute("pagenum", pagenum);
+//			 서블릿에서 jsp에 뭔가를 알려줘야할때
+			
 			
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 			
