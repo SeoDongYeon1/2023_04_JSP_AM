@@ -32,15 +32,19 @@ int endPage = startPage+displayPage-1;
 </head>
 <body>
 	<h1 style = "text-align:center;">게시물 리스트</h1>
-	
-	<div >
-		<a href="../home/main">메인 페이지로 이동</a></div>
+	<nav class="menu_option">
+		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
+			<a href="../home/main">메인 페이지로 이동</a>
+		</div>
+
+		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
+			<a href="write">글 작성하기</a>
+		</div>
+	</nav>
+	<br />
+	<br />
 	<div>
-	
-	<div >
-		<a href="write">글 작성하기</a></div>
-	<div>
-		<table style="border-collapse: collapse; border-color: green; width: 600px;" border = 2px >
+		<table style="border-collapse: collapse; border-color: green; width: 700px; " border = 2px >
 			<tr>
 				<th>번호</th>
 				<th>제목</th>
@@ -49,7 +53,7 @@ int endPage = startPage+displayPage-1;
 		
 			<%for(Map<String, Object> articleRow : articleRows) {
 			%>		
-			<tr style = "text-align: center;">
+			<tr class= "list_item" style = "text-align: center;">
 				<td><%=articleRow.get("id") %></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title") %></a></td>
 				<td><%=articleRow.get("regDate") %></td>
@@ -59,6 +63,31 @@ int endPage = startPage+displayPage-1;
 	</div>
 	
 	<style type="text/css">
+		table {
+			margin-left:auto; 
+    		margin-right:auto;
+		}
+		a {
+			color: black;
+			text-decoration: none;
+			
+		}
+		a:hover {
+			text-decoration: underline;
+		}
+		.menu_option {
+			text-align: center;
+		}
+		.list_item > td > a {
+			color: black;
+			text-decoration: none;
+		}
+		.list_item > td > a:hover {
+			text-decoration: underline;
+		}
+		.page {
+			text-align: center;
+		}
 		.page > a {
 			color: black;
 			text-decoration: none;
@@ -71,7 +100,7 @@ int endPage = startPage+displayPage-1;
 			text-decoration: underline;
 		}
 	</style>
-
+	<br />
 	<div class="page">
 		<a class = "first_page" href="list?page=1">[<<]</a>
 		<%
@@ -83,7 +112,7 @@ int endPage = startPage+displayPage-1;
 	    if(startPage > displayPage)
 	    { 
 		%>
-			<a href="list?page=<%=startPage - 10%>">[이전]</a>	
+			<a href="list?page=<%=startPage - 10%>">[이전]</a>
 		<%}%>
 		<%
 		for(int i=startPage; i <= endPage; i++){
