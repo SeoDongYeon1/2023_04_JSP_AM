@@ -5,7 +5,7 @@
 <%
 List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
 int totalCnt = (int) request.getAttribute("totalCnt");
-int cpage = (int) request.getAttribute("page");
+int cur_Page = (int) request.getAttribute("page");
 
 int totalPage = 0;
 
@@ -69,10 +69,12 @@ else {
 	</style>
 
 	<div class="page">
+		<a class = "first_page" href="list?page=1">[처음 페이지]</a>
 		<%for(int i = 1; i <= totalPage; i++) {
 		%>
-		<a class= "<%=cpage == i ? "red" : ""%>" href="list?page=<%=i%>"><%=i %></a>
+		<a class= "<%=cur_Page == i ? "red" : ""%>" href="list?page=<%=i%>"><%=i %></a>
 		<%} %>
+		<a class = "first_page" href="list?page=<%=totalPage %>">[마지막 페이지]</a>
 	</div>
 	
 </body>
