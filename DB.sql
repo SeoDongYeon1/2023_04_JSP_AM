@@ -49,10 +49,20 @@ INSERT INTO `member`
 SET regDate = NOW(),
 loginId = 'test1',
 loginPw ='test1',
-`name` = '김아무개';
+`name` = '이름1';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'test2',
+loginPw ='test2',
+`name` = '이름2';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'test3',
+loginPw ='test3',
+`name` = '이름3';
 
 SELECT * FROM article ORDER BY id DESC;
 
 SELECT * FROM `member` ORDER BY id DESC;
-
-UPDATE article SET title = '제목11' WHERE id = 1;
