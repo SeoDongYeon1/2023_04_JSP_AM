@@ -32,12 +32,13 @@ int endPage = startPage+displayPage-1;
 </head>
 <body>
 	<h1 style = "text-align:center;">게시물 리스트</h1>
+	<hr />
 	<nav class="menu_option">
-		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
+		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
 			<a style = "display: block" href="../home/main">메인 페이지로 이동</a>
 		</div>
 
-		<div style= "border: 1px solid black; display: inline-block; width: 10%; text-align: center;">
+		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
 			<a style = "display: block" href="write">글 작성하기</a>
 		</div>
 	</nav>
@@ -102,8 +103,12 @@ int endPage = startPage+displayPage-1;
 	</style>
 	<br />
 	<div class="page">
-		<a class = "first_page" href="list?page=1">[<<]</a>
 		<%
+		if(cur_Page >1) {
+			%>
+			<a class = "first_page" href="list?page=1">[<<]</a>	
+			<%
+		}
 		if(endPage > totalPage)
 		{
 			endPage = totalPage;
@@ -113,22 +118,34 @@ int endPage = startPage+displayPage-1;
 	    { 
 		%>
 			<a href="list?page=<%=startPage - 10%>">[이전]</a>
-		<%}%>
 		<%
+		}
 		for(int i=startPage; i <= endPage; i++){
-			if(i == cur_Page){%>
-				<a class= "<%=cur_Page == i ? "red underline" : "" %>" href="list?page=<%=i%>">[<%=i %>]</a>
-			<%									
-			}else{
+			if(i == cur_Page)
+			{
 			%>
 				<a class= "<%=cur_Page == i ? "red underline" : "" %>" href="list?page=<%=i%>">[<%=i %>]</a>
-		<%}
-		}%>
-		<%
-		if(endPage < totalPage){%>
+			<%									
+			} 
+			else
+			{
+			%>
+				<a class= "<%=cur_Page == i ? "red underline" : "" %>" href="list?page=<%=i%>">[<%=i %>]</a>
+			<%
+			}
+		}
+		if(endPage < totalPage)
+		{
+		%>
 			<a href="list?page=<%=startPage + 10 %>">[다음]</a>
-		<%}%>
-		<a class = "last_page" href="list?page=<%=totalPage %>">[>>]</a>
+		<%
+		}
+		if(cur_Page < totalPage) {
+			%>
+			<a class = "last_page" href="list?page=<%=totalPage%>">[>>]</a>	
+			<%
+		}
+		%>
 	</div>
 	
 </body>
