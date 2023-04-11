@@ -58,8 +58,6 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			
 			response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('list')</script>", id));
 			
-			//request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

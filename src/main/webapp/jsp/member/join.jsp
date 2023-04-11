@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<%@ page import="java.util.Map" %>
+
+<%
+Map<String, Object> memberRow = (Map<String, Object>) request.getAttribute("memberRow");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,8 +19,7 @@
 				alert('처리중 입니다.');
 				return;
 			}
-			
-			var loginId = form.loginId.value.trim();
+			var loginId = form.loginId.value.trim();		
 			var loginPw = form.loginPw.value.trim();
 			var loginPwConfirm = form.loginPwConfirm.value.trim();
 			var name = form.name.value.trim();
@@ -35,7 +39,6 @@
 				form.loginPwConfirm.focus();	
 				return false;
 			}
-			
 			if(loginPw != loginPwConfirm) {
 				alert( '비밀번호가 일치하지 않습니다.' );
 				form.loginPw.select();
@@ -43,16 +46,15 @@
 				form.loginPwConfirm.value="";
 			    return false;
 			}
-			
 			if(name.length==0) {
 				alert('이름을 입력해주세요.');
 				form.name.focus();
 				return false;
 			}
-			
 			JoinForm__submitDone = true;
 			form.submit();
 		}
+		
 	</script>
 </head>
 <body>
@@ -60,7 +62,12 @@
 	<h1 style="text-align:center;">회원가입</h1>
 	<hr />
 	
+	<!-- 	<a href="https://www.naver.com" -->
+	<!-- 		onclick="if(confirm('진짜 이동할거임???') == false) return false;"> naver</a> -->
+	
+	
 	<form style="text-align:center;" method="post" action="doJoin" onsubmit = "return JoinForm__Submit(this); return false;">
+	
 		<div>
 			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on"/>
 		</div>
@@ -70,7 +77,7 @@
 		</div>
 		<br />
 		<div>
-			비밀번호 확인<br /><input type="password" placeholder="비밀번호 확인" name="loginPwConfirm" required id="pw2"/>
+			비밀번호 확인<br /><input type="password" placeholder="비밀번호 확인" name="loginPwConfirm"/>
 		</div>
 		<br />
 		<div>

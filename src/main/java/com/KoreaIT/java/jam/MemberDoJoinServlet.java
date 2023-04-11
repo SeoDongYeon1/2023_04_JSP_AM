@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,7 @@ public class MemberDoJoinServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-Connection conn = null;
+		Connection conn = null;
 		
 		try {
 			Class.forName(Config.getDBDriverClassName());
@@ -42,8 +43,20 @@ Connection conn = null;
 			
 			request.setCharacterEncoding("UTF-8");
 			
+
 			SecSql sql = new SecSql();
-			sql.append("INSERT INTO `member`");
+			sql.append("SELECT COUNT(*) AS cnt ");
+			sql.append("FROM `member`");
+			sql.append("WHERE loginId = ?;", loginId);
+			
+			boolean isJoinAbleLoginId = DBUtil.selectRowIntValue(conn, sql)==0;
+			
+			if(isJoinAbleLoginId==false) {
+				response.getWriter().append(String.format("<script>alert('이미 사용중인 아이디입니다.'); history.back()</script>"));
+				return;
+			}
+			
+			sql = SecSql.from("INSERT INTO `member`");
 			sql.append("SET regDate = NOW(),");
 			sql.append("loginId = ?,", loginId);
 			sql.append("loginPw = ?,", loginPw);
