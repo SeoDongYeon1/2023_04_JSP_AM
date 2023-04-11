@@ -36,9 +36,9 @@ Connection conn = null;
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 			response.getWriter().append("Success!!");
 			
-			String loginId = request.getParameter("loginId");
-			String loginPw = request.getParameter("loginPw");
-			String name = request.getParameter("name");
+			String loginId = request.getParameter("loginId").trim();
+			String loginPw = request.getParameter("loginPw").trim();
+			String name = request.getParameter("name").trim();
 			
 			request.setCharacterEncoding("UTF-8");
 			
