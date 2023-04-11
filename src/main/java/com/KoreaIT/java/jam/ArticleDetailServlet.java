@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
 import com.KoreaIT.java.jam.exception.SQLErrorException;
@@ -23,6 +24,15 @@ public class ArticleDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
+		
+		HttpSession session = request.getSession();
+		
+		int loginedMemberId = -1;
+		
+		if(session.getAttribute("loginedMemberId")!=null) {
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		}
+
 		
 		// DB 연결
 		Connection conn = null;
@@ -48,14 +58,17 @@ public class ArticleDetailServlet extends HttpServlet {
 			
 			int id = Integer.parseInt(inputedid);
 			
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
-			sql.append("WHERE article.id = ?", id);
+			SecSql sql = SecSql.from("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
+			sql.append("FROM article a");
+			sql.append("INNER JOIN `member` m");
+			sql.append("ON a.memberId = m.id");
+			sql.append("WHERE a.id = ?", id);
 			
 			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 			
 			response.getWriter().append(articleRow.toString());
 			
+			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("articleRow", articleRow);
 			// 서블릿에서 jsp에 뭔가를 알려줘야할때
 			

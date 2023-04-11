@@ -14,6 +14,11 @@ if(inputedid==null) {
 }
 
 int id = Integer.parseInt(inputedid);
+
+int loginedMemberId = (int) request.getAttribute("loginedMemberId");
+
+int memberId = Integer.parseInt(articleRow.get("memberId").toString());
+
 %>
 <!DOCTYPE html>
 <html>
@@ -28,8 +33,14 @@ int id = Integer.parseInt(inputedid);
 	<div>날짜 : <%=articleRow.get("regDate") %></div>
 	<div>제목 : <%=articleRow.get("title") %></div>
 	<div>내용 : <%=articleRow.get("body") %></div>
-	<div><a href="modify?id=<%=articleRow.get("id")%>">수정</a></div>
+	<div>작성자 : <%=articleRow.get("name") %></div>
+	<%if(loginedMemberId==memberId){ %>
+	<div><a href="modify?id=<%=articleRow.get("id")%>">수정</a></div>	
+	<%}%>
+	<%if(loginedMemberId==memberId){ %>
 	<div><a href="doDelete?id=<%=articleRow.get("id")%>">삭제</a></div>
+	<%}%>
+
 	<div><a style="color:green" href="list">리스트로 돌아가기</a></div>
 </body>
 </html>

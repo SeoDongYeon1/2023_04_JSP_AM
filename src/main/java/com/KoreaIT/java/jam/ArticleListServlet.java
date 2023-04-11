@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
 import com.KoreaIT.java.jam.util.DBUtil;
@@ -24,6 +25,17 @@ public class ArticleListServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		response.setContentType("text/html;charset=UTF-8");
+		
+		HttpSession session = request.getSession();
+		
+		String loginedMembername = null;
+		
+		if(session.getAttribute("loginedMemberId")!=null) {
+			loginedMembername = (String) session.getAttribute("loginedMembername");
+		}
+		
+		request.setAttribute("loginedMembername", loginedMembername);
+		
 		// DB 연결
 		Connection conn = null;
 		try {
@@ -55,8 +67,11 @@ public class ArticleListServlet extends HttpServlet {
 			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
 			
 			sql = new SecSql();
-			sql.append("SELECT * FROM article");
-			sql.append("ORDER BY id DESC LIMIT ?, ?;", limitFrom, itemsInAPage);
+			sql.append("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
+			sql.append("FROM article a");
+			sql.append("INNER JOIN `member` m");
+			sql.append("ON a.memberId = m.id");
+			sql.append("ORDER BY a.id DESC LIMIT ?, ?;", limitFrom, itemsInAPage);
 			
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			

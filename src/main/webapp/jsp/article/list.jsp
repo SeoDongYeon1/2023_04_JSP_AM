@@ -23,6 +23,8 @@ int displayPage = 10;
 int startPage = ((cur_Page-1)/displayPage)*displayPage+1;
 int endPage = startPage+displayPage-1;
 
+String loginedMembername = (String) request.getAttribute("loginedMembername");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -33,6 +35,11 @@ int endPage = startPage+displayPage-1;
 <body>
 	<h1 style = "text-align:center;">게시물 리스트</h1>
 	<hr />
+	
+	<div style="text-align:right;">
+		<%=loginedMembername %>님 로그인 중
+	</div>
+	
 	<nav class="menu_option">
 		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
 			<a style = "display: block" href="../home/main">메인 페이지로 이동</a>
@@ -50,6 +57,7 @@ int endPage = startPage+displayPage-1;
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성날짜</th>
+				<th>작성자</th>
 			</tr>
 		
 			<%for(Map<String, Object> articleRow : articleRows) {
@@ -58,6 +66,7 @@ int endPage = startPage+displayPage-1;
 				<td><%=articleRow.get("id") %></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title") %></a></td>
 				<td><%=articleRow.get("regDate") %></td>
+				<td><%=articleRow.get("name") %></td>
 			</tr>
 			<%} %>
 		</table>

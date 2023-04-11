@@ -10,7 +10,7 @@ public class Config {
 	}
 	
 	public static String getDBPassword() {
-		return "";
+		return "1234";
 	}
 	
 	public static String getDBDriverClassName() {

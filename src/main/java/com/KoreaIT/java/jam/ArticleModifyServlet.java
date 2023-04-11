@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
 import com.KoreaIT.java.jam.exception.SQLErrorException;
@@ -24,7 +25,14 @@ public class ArticleModifyServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html; charset=UTF-8");
-
+		
+		HttpSession session = request.getSession();	
+		
+		if(session.getAttribute("loginedMemberId")==null) {
+			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../article/list')</script>"));
+			return;
+		}
+		
 		// DB 연결
 		Connection conn = null;
 		try {
@@ -46,6 +54,11 @@ public class ArticleModifyServlet extends HttpServlet {
 
 			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
+			if(session.getAttribute("loginedMemberId")!=articleRow.get("memberId")) {
+				response.getWriter().append(String.format("<script>alert('이 게시글에 권한이 없습니다.'); location.replace('../article/list')</script>"));
+				return;
+			}
+			
 			response.getWriter().append(articleRow.toString());
 
 			request.setAttribute("articleRow", articleRow);
@@ -64,6 +77,7 @@ public class ArticleModifyServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	@Override

@@ -39,6 +39,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
+			int memberId = Integer.parseInt(request.getParameter("loginedMemberId"));
 			request.setCharacterEncoding("UTF-8");
 			
 			if(title==null) {
@@ -52,7 +53,8 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			sql.append("INSERT INTO article");
 			sql.append("SET regDate = NOW(),");
 			sql.append("title = ?,", title);
-			sql.append("`body` = ?;", body);
+			sql.append("`body` = ?,", body);
+			sql.append("memberId = ?;", memberId);
 			
 			int id = DBUtil.insert(conn, sql);
 			

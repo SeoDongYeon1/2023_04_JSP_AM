@@ -18,14 +18,20 @@ public class HomeMainServlet extends HttpServlet {
 		
 		boolean isLogined = false;
 		String loginedMemberLoginId = null;
+		String loginedMembername = null;
+		int loginedMemberId = -1;
 		
 		if(session.getAttribute("loginedMemberId")!=null) {
 			isLogined = true;
 			loginedMemberLoginId = (String) session.getAttribute("loginedMemberLoginId");
+			loginedMembername = (String) session.getAttribute("loginedMembername");
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 		}
 		
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("loginedMemberLoginId", loginedMemberLoginId);
+		request.setAttribute("loginedMembername", loginedMembername);
+		request.setAttribute("loginedMemberId", loginedMemberId);
 		
 		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
 		response.setContentType("text/html;charset=UTF-8");
