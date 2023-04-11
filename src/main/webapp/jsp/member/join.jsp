@@ -6,8 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-	<script>
+	<script type="text/javascript">
+		var JoinForm__submitDone = false;
+		
 		function JoinForm__Submit(form) {
+			if(JoinForm__submitDone) {
+				alert('처리중 입니다.');
+				return;
+			}
+			
 			var loginId = form.loginId.value.trim();
 			var loginPw = form.loginPw.value.trim();
 			var loginPwConfirm = form.loginPwConfirm.value.trim();
@@ -37,13 +44,14 @@
 			    return false;
 			}
 			
-			
 			if(name.length==0) {
 				alert('이름을 입력해주세요.');
 				form.name.focus();
 				return false;
 			}
 			
+			JoinForm__submitDone = true;
+			form.submit();
 		}
 	</script>
 </head>
@@ -52,7 +60,7 @@
 	<h1 style="text-align:center;">회원가입</h1>
 	<hr />
 	
-	<form style="text-align:center;" method="post" action="doJoin" onsubmit = "return JoinForm__Submit(this);">
+	<form style="text-align:center;" method="post" action="doJoin" onsubmit = "return JoinForm__Submit(this); return false;">
 		<div>
 			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on"/>
 		</div>

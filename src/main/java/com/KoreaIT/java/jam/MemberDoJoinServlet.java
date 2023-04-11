@@ -51,7 +51,7 @@ Connection conn = null;
 			
 			DBUtil.insert(conn, sql);
 			
-			response.getWriter().append(String.format("<script>alert('회원가입 되었습니다.'); location.replace('../home/main')</script>"));
+			response.getWriter().append(String.format("<script>alert('%s님 회원가입 되었습니다.'); location.replace('../home/main')</script>",name));
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
