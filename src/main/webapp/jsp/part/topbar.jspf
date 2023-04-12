@@ -9,23 +9,25 @@
 	boolean isLogined = (boolean) request.getAttribute("isLogined");
 	String loginedMemberLoginId = (String) request.getAttribute("loginedMemberLoginId");
 	String loginedMembername = (String) request.getAttribute("loginedMembername");
+	Map<String, Object> loginedMemberRow = (Map<String, Object>) request.getAttribute("loginedMemberRow");
 	%>
-	
-	<% if(!isLogined) { %>
-		<div style="display: inline-block;">
-			<a href="../member/login">로그인</a>
-		</div>
-			
-	<%}
-	if(isLogined) { 
-	%>
-		<div style="text-align:left;">
-			<%=loginedMembername %>님 로그인 중
-		</div>
-		<div style = "display: inline-block;">
-			<a style="padding: 5px; display: block;" href="../member/doLogout">로그아웃</a>
-		</div>		
-	<%}%>
+	<nav class="Login_status">
+		<% if(!isLogined) { %>
+			<div style="display: inline-block;">
+				<a href="../member/login">로그인</a>
+			</div>
+				
+		<%}
+		if(isLogined) { 
+		%>
+			<div style="text-align:left;">
+				<%=loginedMemberRow.get("name")%>님 로그인 중
+			</div>
+			<div style = "display: inline-block;">
+				<a style="padding: 5px; display: block;" href="../member/doLogout">로그아웃</a>
+			</div>		
+		<%}%>
+	</nav>
 	<nav class="menu_option" style= "text-align: center;">
 		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
 			<a style = "display: block" href="../home/main">Home</a>
@@ -45,3 +47,12 @@
 		
 	</nav>
 </div>
+<style type="text/css">
+		a {
+			color: black;
+			text-decoration: none;
+		}
+		.Login_status > div > a {
+			text-decoration: underline;
+		}
+</style>

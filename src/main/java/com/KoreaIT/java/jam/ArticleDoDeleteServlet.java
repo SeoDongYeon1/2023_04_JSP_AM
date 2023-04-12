@@ -44,8 +44,6 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 
-			response.getWriter().append("Success!!");
-			
 			String inputedid = request.getParameter("id");
 			
 			if(inputedid==null) {

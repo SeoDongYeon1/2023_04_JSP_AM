@@ -14,9 +14,9 @@
 </head>
 
 <body>
+	<h1 style="text-align:center;">MAIN</h1>
 	<%@ include file="../part/topbar.jspf" %>
 	<hr />
-	<h1 style="text-align:center;">MAIN</h1>
 	
 	
 </body>
