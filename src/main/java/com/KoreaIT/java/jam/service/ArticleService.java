@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.java.jam.dao.ArticleDao;
+import com.KoreaIT.java.jam.dto.Article;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
@@ -43,13 +44,13 @@ public class ArticleService {
 		return totalPage;
 	}
 
-	public List<Map<String, Object>> getForPrintArticleRows(int page) {
+	public List<Article> getArticles(int page) {
 		int itemsInAPage = getItemsInAPage();
 		int limitFrom = (page - 1) * itemsInAPage;
 		
-		List<Map<String, Object>> articleRows = articleDao.getARticleRows(itemsInAPage, limitFrom);
+		List<Article> getArticles = articleDao.getArticles(itemsInAPage, limitFrom);
 		
-		return articleRows;
+		return getArticles;
 	}
 	
 }

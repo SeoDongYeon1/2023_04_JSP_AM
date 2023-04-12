@@ -1,11 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="com.KoreaIT.java.jam.dto.Article" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 int cur_Page = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
-List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
+List<Article> articles = (List<Article>) request.getAttribute("articles");
 
 int displayPage = 10;
 int startPage = ((cur_Page-1)/displayPage)*displayPage+1;
@@ -31,13 +32,13 @@ int endPage = startPage+displayPage-1;
 				<th>작성자</th>
 			</tr>
 		
-			<%for(Map<String, Object> articleRow : articleRows) {
+			<%for(Article article : articles) {
 			%>		
 			<tr class= "list_item" style = "text-align: center;">
-				<td><%=articleRow.get("id") %></td>
-				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title") %></a></td>
-				<td><%=articleRow.get("regDate") %></td>
-				<td><%=articleRow.get("name") %></td>
+				<td><%=article.id %></td>
+				<td><a href="detail?id=<%=article.id%>"><%=article.title %></a></td>
+				<td><%=article.regDate %></td>
+				<td><%=article.extra__writer %></td>
 			</tr>
 			<%} %>
 		</table>
