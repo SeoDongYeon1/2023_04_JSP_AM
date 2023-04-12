@@ -52,5 +52,11 @@ public class ArticleService {
 		
 		return getArticles;
 	}
+
+	public Article getArticle(int id) {
+		Article article = articleDao.getArticle(id);
+		
+		return article;
+	}
 	
 }

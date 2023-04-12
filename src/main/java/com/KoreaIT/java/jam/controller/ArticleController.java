@@ -35,8 +35,6 @@ public class ArticleController {
 			page = Integer.parseInt(request.getParameter("page"));
 		}
 		
-		int itemsInAPage = articleService.getItemsInAPage();
-		
 		int totalPage = articleService.getTotalPage();
 		
 		List<Article> articles = articleService.getArticles(page);
@@ -58,15 +56,9 @@ public class ArticleController {
 		
 		int id = Integer.parseInt(inputedid);
 		
-		SecSql sql = SecSql.from("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
-		sql.append("FROM article a");
-		sql.append("INNER JOIN `member` m");
-		sql.append("ON a.memberId = m.id");
-		sql.append("WHERE a.id = ?", id);
+		Article article = articleService.getArticle(id);
 		
-		Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
-		
-		request.setAttribute("articleRow", articleRow);
+		request.setAttribute("article", article);
 		// 서블릿에서 jsp에 뭔가를 알려줘야할때
 		
 		request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);

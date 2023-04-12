@@ -37,5 +37,17 @@ public class ArticleDao {
 		
 		return articles;
 	}
+	public Article getArticle(int id) {
+		SecSql sql = SecSql.from("SELECT a.*, m.name AS extra__writer");
+		sql.append("FROM article a");
+		sql.append("INNER JOIN `member` m");
+		sql.append("ON a.memberId = m.id");
+		sql.append("WHERE a.id = ?", id);
+		
+		Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
+		Article article = new Article(articleRow);
+		
+		return article;
+	}
 
 }

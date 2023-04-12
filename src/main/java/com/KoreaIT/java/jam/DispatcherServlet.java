@@ -81,6 +81,9 @@ public class DispatcherServlet extends HttpServlet {
 				if(ActionMethodName.equals("list")) {
 					articleController.showList();
 				}
+				else if(ActionMethodName.equals("detail")) {
+					articleController.showDetail();
+				}
 			}
 					
 		} catch (SQLException e) {

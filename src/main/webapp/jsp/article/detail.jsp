@@ -1,12 +1,11 @@
 <%@ page import="java.util.List"%>
-
 <%@ page import="java.util.Map"%>
-
+<%@ page import="com.KoreaIT.java.jam.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%
-Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
+Article article = (Article) request.getAttribute("article");
 String inputedid = request.getParameter("id");
 
 if(inputedid==null) {
@@ -17,7 +16,7 @@ int id = Integer.parseInt(inputedid);
 
 int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 
-int memberId = Integer.parseInt(articleRow.get("memberId").toString());
+int memberId = article.memberId;
 
 %>
 <!DOCTYPE html>
@@ -27,20 +26,20 @@ int memberId = Integer.parseInt(articleRow.get("memberId").toString());
 <title>게시물 상세보기</title>
 </head>
 <body>
-	<h1 style="text-align:center;"><%=articleRow.get("id") %>번 게시물 상세페이지</h1>
+	<h1 style="text-align:center;"><%=article.id %>번 게시물 상세페이지</h1>
 	<%@ include file="../part/topbar.jspf" %>
 	<hr />
 	<nav>
-			<div>번호 : <%=articleRow.get("id") %></div>
-			<div>날짜 : <%=articleRow.get("regDate") %></div>
-			<div>제목 : <%=articleRow.get("title") %></div>
-			<div>내용 : <%=articleRow.get("body") %></div>
-			<div>작성자 : <%=articleRow.get("name") %></div>
+			<div>번호 : <%=article.id %></div>
+			<div>날짜 : <%=article.regDate %></div>
+			<div>제목 : <%=article.title %></div>
+			<div>내용 : <%=article.body %></div>
+			<div>작성자 : <%=article.extra__writer %></div>
 			<%if(loginedMemberId==memberId){ %>
-			<div><a style="text-decoration: underline;" href="modify?id=<%=articleRow.get("id")%>">수정</a></div>	
+			<div><a style="text-decoration: underline;" href="modify?id=<%=article.id%>">수정</a></div>	
 			<%}%>
 			<%if(loginedMemberId==memberId){ %>
-			<div><a style="text-decoration: underline;" href="doDelete?id=<%=articleRow.get("id")%>">삭제</a></div>
+			<div><a style="text-decoration: underline;" href="doDelete?id=<%=article.id%>">삭제</a></div>
 			<%}%>
 	</nav>
 	
