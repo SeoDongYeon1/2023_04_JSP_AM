@@ -14,16 +14,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
+import com.KoreaIT.java.jam.controller.ArticleController;
 import com.KoreaIT.java.jam.exception.SQLErrorException;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/article/detail")
-public class ArticleDetailServlet extends HttpServlet {
+@WebServlet("/s/*")
+public class DispatcherServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		
 		response.setContentType("text/html;charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+		
+		String requestUri = request.getRequestURI();
+		
+		String[] requestUriBits = requestUri.split("/");
+		// localhost:포트번호/s/article/list
+		// [0]/[1]/[2]/[3]
+		
+		if(requestUriBits.length < 5) {
+			response.getWriter().append("올바른 요청이 아닙니다.");
+			return;
+		}
 		
 		// DB 연결
 		Connection conn = null;
@@ -38,8 +51,9 @@ public class ArticleDetailServlet extends HttpServlet {
 		
 		try {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
-
+			
 			HttpSession session = request.getSession();
+			
 			boolean isLogined = false;
 			int loginedMemberId = -1;
 			Map<String, Object> loginedMemberRow = null;
@@ -58,29 +72,17 @@ public class ArticleDetailServlet extends HttpServlet {
 			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("loginedMemberRow", loginedMemberRow);
 			
-			String inputedid = request.getParameter("id");
+			String controllerName = requestUriBits[3];
+			String ActionMethodName = requestUriBits[4];
 			
-			if(inputedid==null) {
-				inputedid = "1";
+			if(controllerName.equals("article")) {
+				ArticleController articleController = new ArticleController(request, response, conn);
+				
+				if(ActionMethodName.equals("list")) {
+					articleController.showList();
+				}
 			}
-			
-			int id = Integer.parseInt(inputedid);
-			
-			SecSql sql = SecSql.from("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
-			sql.append("FROM article a");
-			sql.append("INNER JOIN `member` m");
-			sql.append("ON a.memberId = m.id");
-			sql.append("WHERE a.id = ?", id);
-			
-			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
-			
-			response.getWriter().append(articleRow.toString());
-			
-			request.setAttribute("articleRow", articleRow);
-			// 서블릿에서 jsp에 뭔가를 알려줘야할때
-			
-			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
-			
+					
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (SQLErrorException e) {

@@ -19,7 +19,8 @@ import com.KoreaIT.java.jam.util.SecSql;
 
 @WebServlet("/article/doDelete")
 public class ArticleDoDeleteServlet extends HttpServlet {
-       
+	
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
 		
@@ -32,7 +33,6 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 		
 		// DB 연결
 		Connection conn = null;
-		
 		try {
 			Class.forName(Config.getDBDriverClassName());
 		} catch (ClassNotFoundException e) {

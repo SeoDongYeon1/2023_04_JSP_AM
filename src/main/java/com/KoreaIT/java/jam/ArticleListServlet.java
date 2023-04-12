@@ -40,60 +40,6 @@ public class ArticleListServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 
-			String inputedPage = request.getParameter("page");
-			
-			HttpSession session = request.getSession();
-			boolean isLogined = false;
-			int loginedMemberId = -1;
-			Map<String, Object> loginedMemberRow = null;
-
-			if (session.getAttribute("loginedMemberId") != null) {
-				isLogined = true;
-				loginedMemberId = (int) session.getAttribute("loginedMemberId");
-
-				SecSql sql = SecSql.from("SELECT * FROM `member`");
-				sql.append("WHERE id = ?", loginedMemberId);
-
-				loginedMemberRow = DBUtil.selectRow(conn, sql);
-			}
-
-			request.setAttribute("isLogined", isLogined);
-			request.setAttribute("loginedMemberId", loginedMemberId);
-			request.setAttribute("loginedMemberRow", loginedMemberRow);
-			
-			if(inputedPage==null) {
-				inputedPage = "1";
-			}
-			
-			int page = Integer.parseInt(inputedPage);
-			
-			int itemsInAPage = 10;
-			int limitFrom = (page - 1) * itemsInAPage;
-			
-			SecSql sql = new SecSql();
-			sql.append("SELECT COUNT(*) FROM article");
-			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
-			
-			sql = new SecSql();
-			sql.append("SELECT a.*, m.name");
-			sql.append("FROM article a");
-			sql.append("INNER JOIN `member` m");
-			sql.append("ON a.memberId = m.id");
-			sql.append("ORDER BY a.id DESC LIMIT ?, ?;", limitFrom, itemsInAPage);
-			
-			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
-			
-			response.getWriter().append(articleRows.toString());
-			
-			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("totalCnt", totalCnt);
-			request.setAttribute("page", page);
-			request.setAttribute("isLogined", isLogined);
-//			 서블릿에서 jsp에 뭔가를 알려줘야할때
-			
-			
-			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (SQLErrorException e) {
