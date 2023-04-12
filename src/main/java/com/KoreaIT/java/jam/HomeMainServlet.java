@@ -18,7 +18,7 @@ import com.KoreaIT.java.jam.exception.SQLErrorException;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/home/main")
+@WebServlet("/s/home/main")
 public class HomeMainServlet extends HttpServlet {
 
 	@Override

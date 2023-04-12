@@ -3,21 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
-int totalCnt = (int) request.getAttribute("totalCnt");
 int cur_Page = (int) request.getAttribute("page");
-
-int totalPage = 0;
-
-if(totalCnt%10==0) {
-	totalPage= totalCnt/10;
-}
-else if(totalCnt<=10) {
-	totalPage = 1;
-}
-else {
-	totalPage = totalCnt/10+1;
-}
+int totalPage = (int) request.getAttribute("totalPage");
+List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
 
 int displayPage = 10;
 int startPage = ((cur_Page-1)/displayPage)*displayPage+1;

@@ -8,8 +8,8 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
+import com.KoreaIT.java.jam.service.ArticleService;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
@@ -18,44 +18,61 @@ public class ArticleController {
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private Connection conn;
+	private ArticleService articleService;
 
 	public ArticleController(HttpServletRequest request, HttpServletResponse response, Connection conn) {
 		this.request = request;
 		this.response = response;
 		this.conn = conn;
+		this.articleService = new ArticleService(conn);
 	}
 
 	public void showList() throws ServletException, IOException {
-		String inputedPage = request.getParameter("page");
-		
-		if(inputedPage==null) {
-			inputedPage = "1";
+		int page = 1;
+
+		if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
+			page = Integer.parseInt(request.getParameter("page"));
 		}
 		
-		int page = Integer.parseInt(inputedPage);
+		int itemsInAPage = articleService.getItemsInAPage();
 		
-		int itemsInAPage = 10;
-		int limitFrom = (page - 1) * itemsInAPage;
+		int totalPage = articleService.getTotalPage();
 		
-		SecSql sql = new SecSql();
-		sql.append("SELECT COUNT(*) FROM article");
-		int totalCnt = DBUtil.selectRowIntValue(conn, sql);
+		List<Map<String, Object>> articleRows = articleService.getForPrintArticleRows(page);
 		
-		sql = new SecSql();
-		sql.append("SELECT a.*, m.name");
+//		 서블릿에서 jsp에 뭔가를 알려줘야할때
+		request.setAttribute("page", page);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("articleRows", articleRows);
+
+		request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+	}
+
+	public void showDetail() throws ServletException, IOException {
+		String inputedid = request.getParameter("id");
+		
+		if(inputedid==null) {
+			inputedid = "1";
+		}
+		
+		int id = Integer.parseInt(inputedid);
+		
+		SecSql sql = SecSql.from("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
 		sql.append("FROM article a");
 		sql.append("INNER JOIN `member` m");
 		sql.append("ON a.memberId = m.id");
-		sql.append("ORDER BY a.id DESC LIMIT ?, ?;", limitFrom, itemsInAPage);
+		sql.append("WHERE a.id = ?", id);
 		
-		List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+		Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 		
-//		 서블릿에서 jsp에 뭔가를 알려줘야할때
-		request.setAttribute("articleRows", articleRows);
-		request.setAttribute("totalCnt", totalCnt);
-		request.setAttribute("page", page);
+		request.setAttribute("articleRow", articleRow);
+		// 서블릿에서 jsp에 뭔가를 알려줘야할때
+		
+		request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
+	}
 
-		request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+	public void doWrite() throws IOException {
+		response.getWriter().append(String.format("<script>alert('hu'); location.replace('../home/main')</script>"));
 	}
 
 }
