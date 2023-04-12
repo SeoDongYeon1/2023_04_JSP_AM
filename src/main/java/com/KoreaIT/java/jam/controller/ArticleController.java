@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.dto.Article;
 import com.KoreaIT.java.jam.service.ArticleService;
@@ -56,7 +57,7 @@ public class ArticleController {
 		
 		int id = Integer.parseInt(inputedid);
 		
-		Article article = articleService.getArticle(id);
+		Article article = articleService.getArticleById(id);
 		
 		request.setAttribute("article", article);
 		// 서블릿에서 jsp에 뭔가를 알려줘야할때
@@ -66,6 +67,32 @@ public class ArticleController {
 
 	public void doWrite() throws IOException {
 		response.getWriter().append(String.format("<script>alert('hu'); location.replace('../home/main')</script>"));
+	}
+
+	public void DoDelete() throws IOException {
+		HttpSession session = request.getSession();	
+		
+		if(session.getAttribute("loginedMemberId")==null) {
+			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../article/list')</script>"));
+			return;
+		}
+		
+		int id = 1;
+
+		if (request.getParameter("id") != null && request.getParameter("id").length() != 0) {
+			id = Integer.parseInt(request.getParameter("id"));
+		}
+
+		Article article = articleService.getArticleById(id);
+
+		if((int)session.getAttribute("loginedMemberId")!=article.memberId) {
+			response.getWriter().append(String.format("<script>alert('이 게시글에 권한이 없습니다.'); location.replace('../s/article/list')</script>"));
+			return;
+		}
+		
+		articleService.doDelete(id);
+		
+		response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list')</script>", id));
 	}
 
 }

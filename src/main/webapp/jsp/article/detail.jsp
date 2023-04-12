@@ -39,7 +39,7 @@ int memberId = article.memberId;
 			<div><a style="text-decoration: underline;" href="modify?id=<%=article.id%>">수정</a></div>	
 			<%}%>
 			<%if(loginedMemberId==memberId){ %>
-			<div><a style="text-decoration: underline;" href="doDelete?id=<%=article.id%>">삭제</a></div>
+			<div><a style="text-decoration: underline;" href="delete?id=<%=article.id%>">삭제</a></div>
 			<%}%>
 	</nav>
 	

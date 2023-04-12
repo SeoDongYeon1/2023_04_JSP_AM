@@ -2,12 +2,9 @@ package com.KoreaIT.java.jam.service;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
 
 import com.KoreaIT.java.jam.dao.ArticleDao;
 import com.KoreaIT.java.jam.dto.Article;
-import com.KoreaIT.java.jam.util.DBUtil;
-import com.KoreaIT.java.jam.util.SecSql;
 
 public class ArticleService {
 	private Connection conn;
@@ -53,10 +50,14 @@ public class ArticleService {
 		return getArticles;
 	}
 
-	public Article getArticle(int id) {
-		Article article = articleDao.getArticle(id);
+	public Article getArticleById(int id) {
+		Article article = articleDao.getArticleById(id);
 		
 		return article;
+	}
+
+	public void doDelete(int id) {
+		articleDao.doDelete(id);
 	}
 	
 }

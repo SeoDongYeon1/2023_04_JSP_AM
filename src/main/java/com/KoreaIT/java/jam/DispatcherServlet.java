@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
 import com.KoreaIT.java.jam.controller.ArticleController;
+import com.KoreaIT.java.jam.controller.MemberController;
 import com.KoreaIT.java.jam.exception.SQLErrorException;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
@@ -83,6 +84,19 @@ public class DispatcherServlet extends HttpServlet {
 				}
 				else if(ActionMethodName.equals("detail")) {
 					articleController.showDetail();
+				}
+				else if(ActionMethodName.equals("delete")) {
+					articleController.DoDelete();
+				}
+			}
+			else if(controllerName.equals("member")) {
+				MemberController memberController = new MemberController(request, response, conn);
+				
+				if(ActionMethodName.equals("doLogin")) {
+					memberController.doLogin();
+				}
+				if(ActionMethodName.equals("doLogout")) {
+					memberController.doLogout();
 				}
 			}
 					

@@ -25,11 +25,7 @@ public class MemberDoLogoutServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 
-		HttpSession session = request.getSession();
-		session.removeAttribute("loginedMemberId");
-		session.removeAttribute("loginedMemberLoginId");
 		
-		response.getWriter().append(String.format("<script>alert('로그아웃 되었습니다.'); location.replace('../home/main')</script>"));
 	}
 
 	@Override

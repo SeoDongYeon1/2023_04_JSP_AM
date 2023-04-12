@@ -37,7 +37,7 @@ public class ArticleDao {
 		
 		return articles;
 	}
-	public Article getArticle(int id) {
+	public Article getArticleById(int id) {
 		SecSql sql = SecSql.from("SELECT a.*, m.name AS extra__writer");
 		sql.append("FROM article a");
 		sql.append("INNER JOIN `member` m");
@@ -48,6 +48,13 @@ public class ArticleDao {
 		Article article = new Article(articleRow);
 		
 		return article;
+	}
+	public void doDelete(int id) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM article");
+		sql.append("WHERE id = ?;", id);
+		
+		DBUtil.delete(conn, sql);
 	}
 
 }

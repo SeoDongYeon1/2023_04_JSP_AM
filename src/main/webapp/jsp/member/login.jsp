@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ page import="com.KoreaIT.java.jam.dto.Member"%>
 <%@ page import="java.util.Map" %>
 
 <%
-Map<String, Object> memberRow = (Map<String, Object>) request.getAttribute("memberRow");
+Member member = (Member) request.getAttribute("member");
 %>
 <!DOCTYPE html>
 <html>
