@@ -1,12 +1,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="com.KoreaIT.java.jam.dto.Article" %>
+<%@ page import="com.KoreaIT.java.jam.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-int cur_Page = (int) request.getAttribute("page");
-int totalPage = (int) request.getAttribute("totalPage");
 List<Article> articles = (List<Article>) request.getAttribute("articles");
+int totalPage = (int) request.getAttribute("totalPage");
+int cur_Page = (int) request.getAttribute("page");
+
 
 int displayPage = 10;
 int startPage = ((cur_Page-1)/displayPage)*displayPage+1;
