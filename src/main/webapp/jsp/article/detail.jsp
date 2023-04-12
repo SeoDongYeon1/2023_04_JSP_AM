@@ -27,8 +27,10 @@ int memberId = Integer.parseInt(articleRow.get("memberId").toString());
 <title>게시물 상세보기</title>
 </head>
 <body>
-	<h1><%=articleRow.get("id") %>번 게시물 상세페이지</h1>
-		
+	<h1 style="text-align:center;"><%=articleRow.get("id") %>번 게시물 상세페이지</h1>
+	<%@ include file="../part/topbar.jspf" %>
+	<hr />
+
 	<div>번호 : <%=articleRow.get("id") %></div>
 	<div>날짜 : <%=articleRow.get("regDate") %></div>
 	<div>제목 : <%=articleRow.get("title") %></div>

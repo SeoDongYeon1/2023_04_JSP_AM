@@ -1,6 +1,10 @@
 package com.KoreaIT.java.jam;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,36 +13,76 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/home/main") // 요청사항에 대한 주소 정의
+import com.KoreaIT.java.jam.config.Config;
+import com.KoreaIT.java.jam.exception.SQLErrorException;
+import com.KoreaIT.java.jam.util.DBUtil;
+import com.KoreaIT.java.jam.util.SecSql;
+
+@WebServlet("/home/main")
 public class HomeMainServlet extends HttpServlet {
-       
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session = request.getSession();
-		
-		boolean isLogined = false;
-		String loginedMemberLoginId = null;
-		String loginedMembername = null;
-		int loginedMemberId = -1;
-		
-		if(session.getAttribute("loginedMemberId")!=null) {
-			isLogined = true;
-			loginedMemberLoginId = (String) session.getAttribute("loginedMemberLoginId");
-			loginedMembername = (String) session.getAttribute("loginedMembername");
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
-		
-		request.setAttribute("isLogined", isLogined);
-		request.setAttribute("loginedMemberLoginId", loginedMemberLoginId);
-		request.setAttribute("loginedMembername", loginedMembername);
-		request.setAttribute("loginedMemberId", loginedMemberId);
-		
-		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
-		response.setContentType("text/html;charset=UTF-8");
-	}
-	
+
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		response.setContentType("text/html; charset= UTF-8");
+
+		try {
+			Class.forName(Config.getDBDriverClassName());
+		} catch (ClassNotFoundException e) {
+			System.out.println("예외 : 클래스가 없습니다");
+			return;
+		}
+
+		Connection conn = null;
+
+		try {
+			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassword());
+
+			request.setCharacterEncoding("UTF-8");
+
+			HttpSession session = request.getSession();
+
+			boolean isLogined = false;
+			int loginedMemberId = -1;
+			Map<String, Object> loginedMemberRow = null;
+
+			if (session.getAttribute("loginedMemberId") != null) {
+				isLogined = true;
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+
+				SecSql sql = SecSql.from("SELECT * FROM `member`");
+				sql.append("WHERE id = ?", loginedMemberId);
+
+				loginedMemberRow = DBUtil.selectRow(conn, sql);
+			}
+
+			request.setAttribute("isLogined", isLogined);
+			request.setAttribute("loginedMemberId", loginedMemberId);
+			request.setAttribute("loginedMemberRow", loginedMemberRow);
+
+			request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (SQLErrorException e) {
+			e.getOrigin().printStackTrace();
+		} finally {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

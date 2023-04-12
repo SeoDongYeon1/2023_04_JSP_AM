@@ -49,11 +49,11 @@ Map<String, Object> memberRow = (Map<String, Object>) request.getAttribute("memb
 	<form style="text-align:center;" method="post" action="doLogin" onsubmit = "return LoginForm__Submit(this); return false;">
 	
 		<div>
-			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on"/>
+			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on" required/>
 		</div>
 		<br />
 		<div>
-			비밀번호<br /><input type="password" placeholder="비밀번호" name="loginPw"/>
+			비밀번호<br /><input type="password" placeholder="비밀번호" name="loginPw" required/>
 		</div>
 
 		<br />

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
+import com.KoreaIT.java.jam.exception.SQLErrorException;
 import com.KoreaIT.java.jam.util.DBUtil;
 import com.KoreaIT.java.jam.util.SecSql;
 
@@ -25,16 +26,6 @@ public class ArticleListServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		response.setContentType("text/html;charset=UTF-8");
-		
-		HttpSession session = request.getSession();
-		
-		String loginedMembername = null;
-		
-		if(session.getAttribute("loginedMemberId")!=null) {
-			loginedMembername = (String) session.getAttribute("loginedMembername");
-		}
-		
-		request.setAttribute("loginedMembername", loginedMembername);
 		
 		// DB 연결
 		Connection conn = null;
@@ -49,9 +40,26 @@ public class ArticleListServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 
-			response.getWriter().append("Success!!");
-			
 			String inputedPage = request.getParameter("page");
+			
+			HttpSession session = request.getSession();
+			boolean isLogined = false;
+			int loginedMemberId = -1;
+			Map<String, Object> loginedMemberRow = null;
+
+			if (session.getAttribute("loginedMemberId") != null) {
+				isLogined = true;
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+
+				SecSql sql = SecSql.from("SELECT * FROM `member`");
+				sql.append("WHERE id = ?", loginedMemberId);
+
+				loginedMemberRow = DBUtil.selectRow(conn, sql);
+			}
+
+			request.setAttribute("isLogined", isLogined);
+			request.setAttribute("loginedMemberId", loginedMemberId);
+			request.setAttribute("loginedMemberRow", loginedMemberRow);
 			
 			if(inputedPage==null) {
 				inputedPage = "1";
@@ -67,7 +75,7 @@ public class ArticleListServlet extends HttpServlet {
 			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
 			
 			sql = new SecSql();
-			sql.append("SELECT a.id, a.regDate, a.title, a.body, a.memberId, m.name");
+			sql.append("SELECT a.*, m.name");
 			sql.append("FROM article a");
 			sql.append("INNER JOIN `member` m");
 			sql.append("ON a.memberId = m.id");
@@ -80,6 +88,7 @@ public class ArticleListServlet extends HttpServlet {
 			request.setAttribute("articleRows", articleRows);
 			request.setAttribute("totalCnt", totalCnt);
 			request.setAttribute("page", page);
+			request.setAttribute("isLogined", isLogined);
 //			 서블릿에서 jsp에 뭔가를 알려줘야할때
 			
 			
@@ -87,6 +96,8 @@ public class ArticleListServlet extends HttpServlet {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (SQLErrorException e) {
+			e.getOrigin().printStackTrace();
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
@@ -96,6 +107,12 @@ public class ArticleListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
 }

@@ -25,15 +25,6 @@ public class ArticleDetailServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		
-		HttpSession session = request.getSession();
-		
-		int loginedMemberId = -1;
-		
-		if(session.getAttribute("loginedMemberId")!=null) {
-			loginedMemberId = (int) session.getAttribute("loginedMemberId");
-		}
-
-		
 		// DB 연결
 		Connection conn = null;
 		
@@ -48,8 +39,24 @@ public class ArticleDetailServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 
-			response.getWriter().append("Success!!");
-			
+			HttpSession session = request.getSession();
+			boolean isLogined = false;
+			int loginedMemberId = -1;
+			Map<String, Object> loginedMemberRow = null;
+
+			if (session.getAttribute("loginedMemberId") != null) {
+				isLogined = true;
+				loginedMemberId = (int) session.getAttribute("loginedMemberId");
+
+				SecSql sql = SecSql.from("SELECT * FROM `member`");
+				sql.append("WHERE id = ?", loginedMemberId);
+
+				loginedMemberRow = DBUtil.selectRow(conn, sql);
+			}
+
+			request.setAttribute("isLogined", isLogined);
+			request.setAttribute("loginedMemberId", loginedMemberId);
+			request.setAttribute("loginedMemberRow", loginedMemberRow);
 			String inputedid = request.getParameter("id");
 			
 			if(inputedid==null) {
@@ -68,7 +75,6 @@ public class ArticleDetailServlet extends HttpServlet {
 			
 			response.getWriter().append(articleRow.toString());
 			
-			request.setAttribute("loginedMemberId", loginedMemberId);
 			request.setAttribute("articleRow", articleRow);
 			// 서블릿에서 jsp에 뭔가를 알려줘야할때
 			
@@ -87,6 +93,12 @@ public class ArticleDetailServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

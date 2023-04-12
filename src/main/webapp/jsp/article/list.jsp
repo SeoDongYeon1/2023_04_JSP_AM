@@ -23,8 +23,6 @@ int displayPage = 10;
 int startPage = ((cur_Page-1)/displayPage)*displayPage+1;
 int endPage = startPage+displayPage-1;
 
-String loginedMembername = (String) request.getAttribute("loginedMembername");
-
 %>
 <!DOCTYPE html>
 <html>
@@ -34,23 +32,8 @@ String loginedMembername = (String) request.getAttribute("loginedMembername");
 </head>
 <body>
 	<h1 style = "text-align:center;">게시물 리스트</h1>
+	<%@ include file="../part/topbar.jspf" %>
 	<hr />
-	
-	<div style="text-align:right;">
-		<%=loginedMembername %>님 로그인 중
-	</div>
-	
-	<nav class="menu_option">
-		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
-			<a style = "display: block" href="../home/main">메인 페이지로 이동</a>
-		</div>
-
-		<div style= "border: 1px solid black; display: inline-block; width: 13%; text-align: center;">
-			<a style = "display: block" href="write">글 작성하기</a>
-		</div>
-	</nav>
-	<br />
-	<br />
 	<div>
 		<table style="border-collapse: collapse; border-color: green; width: 700px; " border = 2px >
 			<tr>
