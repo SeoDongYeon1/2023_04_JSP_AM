@@ -82,11 +82,17 @@ public class DispatcherServlet extends HttpServlet {
 				if(ActionMethodName.equals("list")) {
 					articleController.showList();
 				}
+				else if(ActionMethodName.equals("doWrite")) {
+					articleController.DoWrite();
+				}
 				else if(ActionMethodName.equals("detail")) {
 					articleController.showDetail();
 				}
 				else if(ActionMethodName.equals("delete")) {
 					articleController.DoDelete();
+				}
+				else if(ActionMethodName.equals("doModify")) {
+					articleController.DoModify();
 				}
 			}
 			else if(controllerName.equals("member")) {
@@ -95,8 +101,11 @@ public class DispatcherServlet extends HttpServlet {
 				if(ActionMethodName.equals("doLogin")) {
 					memberController.doLogin();
 				}
-				if(ActionMethodName.equals("doLogout")) {
+				else if(ActionMethodName.equals("doLogout")) {
 					memberController.doLogout();
+				}
+				else if(ActionMethodName.equals("doJoin")) {
+					memberController.doJoin();
 				}
 			}
 					

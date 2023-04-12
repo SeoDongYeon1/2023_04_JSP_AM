@@ -56,5 +56,25 @@ public class ArticleDao {
 		
 		DBUtil.delete(conn, sql);
 	}
+	public void doModify(String title, String body, int id) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET title = ?", title);
+		sql.append(", `body` = ?", body);
+		sql.append("WHERE id = ?;", id);
+
+		DBUtil.update(conn, sql);
+	}
+	public int Dowrite(String title, String body, int memberId) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO article");
+		sql.append("SET regDate = NOW(),");
+		sql.append("title = ?,", title);
+		sql.append("`body` = ?,", body);
+		sql.append("memberId = ?;", memberId);
+		
+		int id = DBUtil.insert(conn, sql);
+		return id;
+	}
 
 }

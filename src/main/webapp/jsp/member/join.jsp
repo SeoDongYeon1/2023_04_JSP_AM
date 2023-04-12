@@ -4,7 +4,6 @@
 <%@ page import="java.util.Map" %>
 
 <%
-Map<String, Object> memberRow = (Map<String, Object>) request.getAttribute("memberRow");
 %>
 <!DOCTYPE html>
 <html>

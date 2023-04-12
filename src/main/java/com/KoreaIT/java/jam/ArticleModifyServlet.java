@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.config.Config;
+import com.KoreaIT.java.jam.controller.ArticleController;
+import com.KoreaIT.java.jam.dto.Article;
 import com.KoreaIT.java.jam.exception.SQLErrorException;
-import com.KoreaIT.java.jam.util.DBUtil;
-import com.KoreaIT.java.jam.util.SecSql;
 
-@WebServlet("/article/modify")
+@WebServlet("/s/article/modify")
 public class ArticleModifyServlet extends HttpServlet {
+
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -47,21 +47,17 @@ public class ArticleModifyServlet extends HttpServlet {
 			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(),Config.getDBPassword());
 
 			int id = Integer.parseInt(request.getParameter("id"));
+			
+			ArticleController articleController = new ArticleController(request, response, conn);
 
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
-			sql.append("WHERE id = ? ;", id);
+			Article article = articleController.getArticleById(id);
 
-			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
-
-			if(session.getAttribute("loginedMemberId")!=articleRow.get("memberId")) {
+			if((int)session.getAttribute("loginedMemberId")!=article.memberId) {
 				response.getWriter().append(String.format("<script>alert('이 게시글에 권한이 없습니다.'); location.replace('../article/list')</script>"));
 				return;
 			}
 			
-			response.getWriter().append(articleRow.toString());
-
-			request.setAttribute("articleRow", articleRow);
+			request.setAttribute("article", article);
 			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
 
 		} catch (SQLException e) {

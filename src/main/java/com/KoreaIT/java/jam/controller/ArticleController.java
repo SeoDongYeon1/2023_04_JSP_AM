@@ -3,7 +3,6 @@ package com.KoreaIT.java.jam.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import com.KoreaIT.java.jam.dto.Article;
 import com.KoreaIT.java.jam.service.ArticleService;
-import com.KoreaIT.java.jam.util.DBUtil;
-import com.KoreaIT.java.jam.util.SecSql;
 
 public class ArticleController {
 	
@@ -46,6 +43,31 @@ public class ArticleController {
 		request.setAttribute("articles", articles);
 
 		request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+	}
+	
+	public void DoWrite() throws IOException {
+		HttpSession session = request.getSession();	
+		
+		if(session.getAttribute("loginedMemberId")==null) {
+			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../article/list')</script>"));
+			return;
+		}
+		
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
+		int memberId = Integer.parseInt(request.getParameter("loginedMemberId"));
+		request.setCharacterEncoding("UTF-8");
+		
+		if(title==null) {
+			title = "제목";
+		}
+		if(body==null) {
+			body = "내용";
+		}
+
+		int id = articleService.DoWrite(title, body, memberId);
+		
+		response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('list')</script>", id));
 	}
 
 	public void showDetail() throws ServletException, IOException {
@@ -93,6 +115,35 @@ public class ArticleController {
 		articleService.doDelete(id);
 		
 		response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list')</script>", id));
+	}
+
+	public void DoModify() throws IOException {
+		HttpSession session = request.getSession();	
+		
+		if(session.getAttribute("loginedMemberId")==null) {
+			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../article/list')</script>"));
+			return;
+		}
+		
+		String title = request.getParameter("title");
+		String body = request.getParameter("body");
+		int id = Integer.parseInt(request.getParameter("id"));
+		
+		if(title==null) {
+			title = "제목";
+		}
+		if(body==null) {
+			body = "내용";
+		}
+
+		articleService.doModify(title, body, id);
+		
+		response.getWriter().append(String.format("<script>alert('%d번 글이 수정되었습니다.'); location.replace('detail?id=%d')</script>", id, id));
+	}
+	
+	public Article getArticleById(int id) {
+		Article article = articleService.getArticleById(id);
+		return article;
 	}
 
 }

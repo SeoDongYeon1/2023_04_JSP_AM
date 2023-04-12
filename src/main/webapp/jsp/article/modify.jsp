@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map" %>
-
+<%@ page import="com.KoreaIT.java.jam.dto.Article"%>
 <%
-Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
+Article article = (Article) request.getAttribute("article");
 %>
 <!DOCTYPE html>
 <html>
@@ -12,18 +12,18 @@ Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("art
 <title>게시물 수정</title>
 </head>
 <body>
-	<h1 style="text-align:center;"><%=articleRow.get("id") %>번 게시물 수정</h1>
+	<h1 style="text-align:center;"><%=article.id%>번 게시물 수정</h1>
 	<div><a style="color:green" href="list">리스트로 돌아가기</a></div>
 	
 	<form method="post" action="doModify">
-		<input value= "<%=articleRow.get("id") %>" type="hidden" name="id"/>
+		<input value= "<%=article.id%>" type="hidden" name="id"/>
 		<div>
-			제목 : <input value="<%=articleRow.get("title")%>" type="text" name="title"
+			제목 : <input value="<%=article.title%>" type="text" name="title"
 				placeholder="제목을 입력해주세요" />
 		</div>
 		<div>
 			내용 :
-			<textarea type="text" name="body" placeholder="내용을 입력해주세요"><%=articleRow.get("body")%></textarea>
+			<textarea type="text" name="body" placeholder="내용을 입력해주세요"><%=article.body%></textarea>
 		</div>
 		<button type="submit">수정하기</button>
 	</form>

@@ -59,5 +59,14 @@ public class ArticleService {
 	public void doDelete(int id) {
 		articleDao.doDelete(id);
 	}
+
+	public void doModify(String title, String body, int id) {
+		articleDao.doModify(title, body, id);
+	}
+
+	public int DoWrite(String title, String body, int memberId) {
+		int id = articleDao.Dowrite(title, body, memberId);
+		return id;
+	}
 	
 }

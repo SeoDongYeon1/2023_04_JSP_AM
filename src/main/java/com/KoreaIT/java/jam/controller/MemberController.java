@@ -57,4 +57,23 @@ public class MemberController {
 		response.getWriter().append(String.format("<script>alert('로그아웃 되었습니다.'); location.replace('../home/main')</script>"));
 	}
 
+	public void doJoin() throws IOException {
+		String loginId = request.getParameter("loginId").trim();
+		String loginPw = request.getParameter("loginPw").trim();
+		String name = request.getParameter("name").trim();
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		boolean isJoinAbleLoginId = memberService.isJoinAbleLoginId(loginId);
+		
+		if(isJoinAbleLoginId==false) {
+			response.getWriter().append(String.format("<script>alert('이미 사용중인 아이디입니다.'); location.replace('../member/join')</script>"));
+			return;
+		}
+		
+		memberService.doJoin(loginId, loginPw, name);
+		
+		response.getWriter().append(String.format("<script>alert('%s님 회원가입 되었습니다.'); location.replace('../home/main')</script>",name));
+	}
+
 }

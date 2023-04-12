@@ -20,4 +20,13 @@ public class MemberService {
 		return member;
 	}
 
+	public boolean isJoinAbleLoginId(String loginId) {
+		boolean isJoinAbleLoginId = memberDao.isJoinAbleLoginId(loginId);
+		return isJoinAbleLoginId;
+	}
+
+	public void doJoin(String loginId, String loginPw, String name) {
+		memberDao.doJoin(loginId, loginPw, name);
+	}
+
 }
