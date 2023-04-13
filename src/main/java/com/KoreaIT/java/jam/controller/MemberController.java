@@ -31,12 +31,12 @@ public class MemberController {
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if(member==null) {
-			response.getWriter().append(String.format("<script>alert('아이디를 확인해주세요.'); location.replace('../s/member/login')</script>"));
+			response.getWriter().append(String.format("<script>alert('아이디를 확인해주세요.'); location.replace('../member/login')</script>"));
 			return;
 		}
 		
 		if(member.loginPw.equals(loginPw)==false) {
-			response.getWriter().append(String.format("<script>alert('비밀번호를 확인해주세요.'); location.replace('../s/member/login')</script>"));
+			response.getWriter().append(String.format("<script>alert('비밀번호를 확인해주세요.'); location.replace('../member/login')</script>"));
 			return;
 		}
 		

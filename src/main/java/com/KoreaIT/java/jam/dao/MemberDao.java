@@ -22,6 +22,10 @@ public class MemberDao {
 		
 		Map<String, Object> memberRow = DBUtil.selectRow(conn, sql);
 		
+		if(memberRow.isEmpty()) {
+			return null;
+		}
+		
 		Member member = new Member(memberRow);
 		
 		return member;
