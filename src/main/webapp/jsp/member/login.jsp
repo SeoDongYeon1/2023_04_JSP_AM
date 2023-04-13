@@ -46,7 +46,7 @@ Member member = (Member) request.getAttribute("member");
 	<h1 style="text-align:center;">로그인</h1>
 	<hr />
 	<div><a style="color:green" href="../home/main">메인으로 돌아가기</a></div>
-	<form style="text-align:center;" method="post" action="doLogin" onsubmit = "return LoginForm__Submit(this); return false;">
+	<form style="text-align:center;" method="post" action="DoLogin" onsubmit = "return LoginForm__Submit(this); return false;">
 	
 		<div>
 			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on" required/>

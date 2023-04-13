@@ -82,30 +82,30 @@ public class DispatcherServlet extends HttpServlet {
 				if(ActionMethodName.equals("list")) {
 					articleController.showList();
 				}
-				else if(ActionMethodName.equals("doWrite")) {
-					articleController.DoWrite();
+				else if(ActionMethodName.equals("write") || ActionMethodName.equals("DoWrite")) {
+					articleController.doWrite(ActionMethodName);
 				}
 				else if(ActionMethodName.equals("detail")) {
 					articleController.showDetail();
 				}
 				else if(ActionMethodName.equals("delete")) {
-					articleController.DoDelete();
+					articleController.doDelete();
 				}
-				else if(ActionMethodName.equals("doModify")) {
-					articleController.DoModify();
+				else if(ActionMethodName.equals("modify") || ActionMethodName.equals("DoModify")) {
+					articleController.doModify(ActionMethodName);
 				}
 			}
 			else if(controllerName.equals("member")) {
 				MemberController memberController = new MemberController(request, response, conn);
 				
-				if(ActionMethodName.equals("doLogin")) {
-					memberController.doLogin();
+				if(ActionMethodName.equals("login") || ActionMethodName.equals("DoLogin")) {
+					memberController.doLogin(ActionMethodName);
 				}
 				else if(ActionMethodName.equals("doLogout")) {
 					memberController.doLogout();
 				}
-				else if(ActionMethodName.equals("doJoin")) {
-					memberController.doJoin();
+				else if(ActionMethodName.equals("join") || ActionMethodName.equals("DoJoin")) {
+					memberController.doJoin(ActionMethodName);
 				}
 			}
 					

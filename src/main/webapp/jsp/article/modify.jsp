@@ -15,7 +15,7 @@ Article article = (Article) request.getAttribute("article");
 	<h1 style="text-align:center;"><%=article.id%>번 게시물 수정</h1>
 	<div><a style="color:green" href="list">리스트로 돌아가기</a></div>
 	
-	<form method="post" action="doModify">
+	<form method="post" action="DoModify">
 		<input value= "<%=article.id%>" type="hidden" name="id"/>
 		<div>
 			제목 : <input value="<%=article.title%>" type="text" name="title"

@@ -65,7 +65,7 @@
 	<!-- 		onclick="if(confirm('진짜 이동할거임???') == false) return false;"> naver</a> -->
 	
 	
-	<form style="text-align:center;" method="post" action="doJoin" onsubmit = "return JoinForm__Submit(this); return false;">
+	<form style="text-align:center;" method="post" action="DoJoin" onsubmit = "return JoinForm__Submit(this); return false;">
 	
 		<div>
 			아이디<br /><input type="text" placeholder="아이디" name="loginId" autocomplete="on" required/>

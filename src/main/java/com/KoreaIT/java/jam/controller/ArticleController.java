@@ -45,31 +45,43 @@ public class ArticleController {
 		request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 	}
 	
-	public void DoWrite() throws IOException {
+	public void doWrite(String actionMethodName) throws IOException, ServletException {
 		HttpSession session = request.getSession();	
 		
+		int loginedMemberId = -1;
+		
+		if(session.getAttribute("loginedMemberId")!=null) {
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		}
+		
 		if(session.getAttribute("loginedMemberId")==null) {
-			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../article/list')</script>"));
+			response.getWriter().append(String.format("<script>alert('로그인 후 이용해주세요.'); location.replace('../home/main')</script>"));
 			return;
 		}
 		
-		String title = request.getParameter("title");
-		String body = request.getParameter("body");
-		int memberId = Integer.parseInt(request.getParameter("loginedMemberId"));
-		request.setCharacterEncoding("UTF-8");
-		
-		if(title==null) {
-			title = "제목";
+		if(actionMethodName.equals("write")) {
+			request.setAttribute("loginedMemberId", loginedMemberId);
+			request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
 		}
-		if(body==null) {
-			body = "내용";
-		}
+		else if(actionMethodName.equals("DoWrite")) {
+			String title = request.getParameter("title");
+			String body = request.getParameter("body");
+			int memberId = Integer.parseInt(request.getParameter("loginedMemberId"));
+			request.setCharacterEncoding("UTF-8");
+			
+			if(title==null) {
+				title = "제목";
+			}
+			if(body==null) {
+				body = "내용";
+			}
 
-		int id = articleService.DoWrite(title, body, memberId);
-		
-		response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('list')</script>", id));
+			int id = articleService.DoWrite(title, body, memberId);
+			
+			response.getWriter().append(String.format("<script>alert('%d번 글이 생성되었습니다.'); location.replace('list')</script>", id));
+		}
 	}
-
+	
 	public void showDetail() throws ServletException, IOException {
 		String inputedid = request.getParameter("id");
 		
@@ -87,11 +99,7 @@ public class ArticleController {
 		request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
 	}
 
-	public void doWrite() throws IOException {
-		response.getWriter().append(String.format("<script>alert('hu'); location.replace('../home/main')</script>"));
-	}
-
-	public void DoDelete() throws IOException {
+	public void doDelete() throws IOException {
 		HttpSession session = request.getSession();	
 		
 		if(session.getAttribute("loginedMemberId")==null) {
@@ -117,7 +125,9 @@ public class ArticleController {
 		response.getWriter().append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list')</script>", id));
 	}
 
-	public void DoModify() throws IOException {
+	public void doModify(String actionMethodName) throws IOException, ServletException {
+		response.setContentType("text/html; charset=UTF-8");
+		
 		HttpSession session = request.getSession();	
 		
 		if(session.getAttribute("loginedMemberId")==null) {
@@ -125,25 +135,41 @@ public class ArticleController {
 			return;
 		}
 		
-		String title = request.getParameter("title");
-		String body = request.getParameter("body");
-		int id = Integer.parseInt(request.getParameter("id"));
-		
-		if(title==null) {
-			title = "제목";
+		if(actionMethodName.equals("modify")) {
+			int id = Integer.parseInt(request.getParameter("id"));
+			
+			Article article = articleService.getArticleById(id);
+			
+			if((int)session.getAttribute("loginedMemberId")!=article.memberId) {
+				response.getWriter().append(String.format("<script>alert('이 게시글에 권한이 없습니다.'); location.replace('../article/list')</script>"));
+				return;
+			}
+			
+			request.setAttribute("article", article);
+			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
 		}
-		if(body==null) {
-			body = "내용";
-		}
+		else if(actionMethodName.equals("DoModify")) {
+			String title = request.getParameter("title");
+			String body = request.getParameter("body");
+			int id = Integer.parseInt(request.getParameter("id"));
+			
+			if(title==null) {
+				title = "제목";
+			}
+			if(body==null) {
+				body = "내용";
+			}
 
-		articleService.doModify(title, body, id);
-		
-		response.getWriter().append(String.format("<script>alert('%d번 글이 수정되었습니다.'); location.replace('detail?id=%d')</script>", id, id));
+			articleService.doModify(title, body, id);
+			
+			response.getWriter().append(String.format("<script>alert('%d번 글이 수정되었습니다.'); location.replace('detail?id=%d')</script>", id, id));
+		}
 	}
-	
+		
 	public Article getArticleById(int id) {
 		Article article = articleService.getArticleById(id);
 		return article;
 	}
+
 
 }
